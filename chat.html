@@ -3,21 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alien Chat</title>
+    <title>Alien Chat - X Style</title>
     <style>
-        body { background-color: #0b0f19; color: #00ff66; font-family: monospace; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .chat-container { width: 100%; max-width: 500px; background: #121824; border: 2px solid #00ff66; border-radius: 8px; margin-top: 20px; }
-        .chat-header { background: #00ff66; color: #0b0f19; padding: 15px; text-align: center; font-weight: bold; }
-        .chat-box { height: 400px; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .post { background: #1a2333; padding: 10px; border-radius: 5px; border-left: 3px solid #00ff66; }
-        .username { color: #00bcff; font-weight: bold; }
-        .chat-form { display: flex; padding: 10px; }
-        .chat-form input { flex: 1; background: #121824; border: 1px solid #00ff66; color: #00ff66; padding: 10px; }
-        .chat-form button { background: #00ff66; color: #0b0f19; border: none; padding: 0 20px; font-weight: bold; cursor: pointer; }
+        /* Sfondo a stelle in movimento veloce (effetto warp galassia in bianco e nero) */
+        @keyframes warp {
+            0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
+            100% { background-position: 0px 1000px, 0px 800px, 0px 600px; }
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            /* Creazione delle stelle che scorrono in verticale */
+            background-image: 
+                radial-gradient(1px 15px at 100px 50px, #fff, transparent),
+                radial-gradient(2px 25px at 200px 150px, #ddd, transparent),
+                radial-gradient(1.5px 20px at 300px 250px, #fff, transparent),
+                radial-gradient(2px 30px at 50px 300px, #ccc, transparent);
+            background-size: 400px 400px, 300px 300px, 250px 250px, 350px 350px;
+            animation: warp 0.8s linear infinite; /* Movimento velocissimo */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Contenitore principale stile X/Twitter (Bianco e Nero, molto largo) */
+        .app-container {
+            background: #fff;
+            color: #0f1419;
+            width: 95%; /* Molto largo, restringe i bordi dello sfondo */
+            max-width: 700px;
+            margin: 0 auto;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Header (Top Bar) */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            border-bottom: 1px solid #eff3f4;
+        }
+        .header-top {
+            display: flex;
+            justify-content: center;
+            padding: 12px;
+            font-size: 28px;
+            font-weight: bold;
+            border-bottom: 1px solid #eff3f4;
+        }
+        .tabs {
+            display: flex;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            font-weight: bold;
+            cursor: pointer;
+            color: #536471;
+            transition: background 0.2s;
+            font-size: 16px;
+        }
+        .tab.active {
+            color: #0f1419;
+            border-bottom: 4px solid #0f1419; /* Linea nera X style */
+        }
+
+        /* Area Input (Scrivi un post) */
+        .compose-area {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #eff3f4;
+            gap: 15px;
+        }
+        .avatar {
+            width: 60px; /* Icone ingrandite */
+            height: 60px;
+            background: #0f1419;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            flex-shrink: 0;
+        }
+        .compose-input-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .compose-input-container input {
+            border: none;
+            font-size: 20px;
+            outline: none;
+            padding: 10px 0;
+            background: transparent;
+        }
+        .compose-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+        .post-btn {
+            background: #0f1419;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Feed dei messaggi */
+        .feed {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px; /* Spazio per la bottom bar */
+        }
+        .post {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #eff3f4;
+            gap: 15px;
+        }
+        .post-content {
+            flex: 1;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        .post-name { font-weight: bold; font-size: 17px;}
+        .post-username { color: #536471; font-size: 15px; }
+        .post-text { font-size: 18px; line-height: 1.5; word-break: break-word;}
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: #536471;
+            max-width: 80%;
+        }
+        .post-actions span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        /* Bottom Bar (Mobile) */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            width: 95%;
+            max-width: 700px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #eff3f4;
+            z-index: 10;
+        }
+        .bottom-icon {
+            font-size: 28px;
+            color: #0f1419;
+        }
     </style>
 </head>
 <body>
 
-    <div class="chat-container">
-        <div class="chat-header">🛸 ALIEN CHAT // GT HUBE</div>
-        <div class="chat-box"
+    <div class="app-container">
+        <div class="header">
+            <div class="header-top">X // ALIEN CHAT</div>
+            <div class="tabs">
+                <div class="tab active">For You</div>
+                <div class="tab">Following</div>
+            </div>
+        </div>
+
+        <div class="compose-area">
+            <div class="avatar">👽</div>
+            <form class="compose-input-container" id="postForm">
+                <input type="text" id="postInput" placeholder="What is happening in the galaxy?!" autocomplete="off" required>
+                <div class="compose-actions">
+                    <button type="submit" class="post-btn">Post</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="feed" id="chatBox">
+            <div class="post">
+                <div class="avatar">👾</div>
+                <div class="post-content">
+                    <div class="post-header">
+                        <span class="post-name">GalacticExplorer</span>
+                        <span class="post-username">@GalacticExplorer</span>
+                    </div>
+                    <div class="post-text">Connessione quantica stabilita. Tutto il feed è stato convertito in frequenze monocromatiche terrestri. 🛸</div>
+                    <div class="post-actions">
+                        <span>💬 12</span>
+                        <span>🔁 45</span>
+                        <span>♡ 302</span>
+                        <span>📊 4.1k</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <div class="bottom-icon">🏠</div>
+            <div class="bottom-icon">🔍</div>
+            <div class="bottom-icon">🔔</div>
+            <div class="bottom-icon">✉️</div>
+        </div>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const postForm = document.getElementById('postForm');
+        const postInput = document.getElementById('postInput');
+        
+        postForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const testo = postInput.value.trim();
+            if(!testo) return;
+            
+            // Crea il nuovo post
+            const newPost = document.createElement('div');
+            newPost.className = 'post';
+            newPost.innerHTML = `
+                <div class="avatar">👽</div>
+                <div class="post-content">
+                    <div class="post-header">
+                        <span class="post-name">Tu (Alieno)</span>
+                        <span class="post-username">@alieno_mobile</span>
+                    </div>
+                    <div class="post-text">${testo}</div>
+                    <div class="post-actions">
+                        <span>💬 0</span>
+                        <span>🔁 0</span>
+                        <span>♡ 0</span>
+                        <span>📊 1</span>
+                    </div>
+                </div>
+            `;
+            
+            // Inseriscilo in cima al feed
+            chatBox.insertBefore(newPost, chatBox.firstChild);
+            postInput.value = "";
+        });
+    </script>
+</body>
+</html>
